@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏆 クイズランキング</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="ranking-page">
+  <div class="floaty" style="top:6%;left:5%;animation-delay:0s">🏆</div>
+  <div class="floaty" style="top:12%;right:6%;animation-delay:2s">🎁</div>
+  <div class="floaty" style="bottom:8%;right:8%;animation-delay:3.4s">✨</div>
+
+  <div id="demoBadge" class="badge-demo hidden">デモモード（未接続）</div>
+
+  <div class="rank-stage">
+    <div class="rank-head">
+      <h1>🏆 クイズランキング</h1>
+      <p id="count">参加 0 名</p>
+    </div>
+
+    <div class="rank-list" id="rankList">
+      <div class="empty">読み込み中… ⏳</div>
+    </div>
+
+    <p class="footer-note">
+      自動で最新の順位に更新されます ✨
+      <a class="link" href="index.html">← クイズに戻る</a>
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ranking.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛠 クイズ作成・編集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-page">
+  <div id="demoBadge" class="badge-demo hidden">デモモード（未接続）</div>
+
+  <div class="admin-stage">
+    <header class="admin-head">
+      <h1>🛠 クイズ作成・編集</h1>
+      <p>問題・選択肢・順番・正解を設定して「DBに保存（公開）」するとゲストに反映されます。</p>
+    </header>
+
+    <!-- 基本設定 -->
+    <section class="panel">
+      <h2 class="panel-title">基本設定</h2>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-couple">ふたりの名前</label>
+          <input id="f-couple" class="input" type="text" placeholder="例）Taka ❤ Hana" />
+        </div>
+        <div class="field">
+          <label for="f-time">制限時間（秒・0で無制限）</label>
+          <input id="f-time" class="input" type="number" min="0" max="120" />
+        </div>
+        <div class="field">
+          <label for="f-title">タイトル</label>
+          <input id="f-title" class="input" type="text" placeholder="例）ふたりのこと、どれだけ知ってる？" />
+        </div>
+        <div class="field">
+          <label for="f-subtitle">サブタイトル</label>
+          <input id="f-subtitle" class="input" type="text" placeholder="例）新郎新婦クイズ大会" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 問題一覧 -->
+    <section class="panel">
+      <div class="panel-title-row">
+        <h2 class="panel-title">問題（<span id="qTotal">0 問</span>）</h2>
+      </div>
+      <div id="questions"></div>
+      <button id="addQuestionBtn" class="btn secondary add-question">＋ 問題を追加</button>
+    </section>
+
+    <!-- 補助操作 -->
+    <section class="panel">
+      <h2 class="panel-title">バックアップ / 上級者向け</h2>
+      <div class="tool-grid">
+        <button id="reloadDbBtn" class="btn ghost">🔄 公開中(DB)を読込</button>
+        <button id="exportJsonBtn" class="btn ghost">⬇ JSON書き出し</button>
+        <label class="btn ghost file-label">⬆ JSON読み込み
+          <input id="importInput" type="file" accept=".json,application/json" hidden />
+        </label>
+        <button id="exportJsBtn" class="btn ghost">⬇ quiz-data.js書き出し</button>
+      </div>
+      <p class="muted small">※ DBを使わずファイル方式にしたい場合は「quiz-data.js書き出し」で出力 → js/ に置き替え。</p>
+    </section>
+  </div>
+
+  <!-- 下部固定バー -->
+  <div class="action-bar">
+    <span id="statusMsg" class="status-msg"></span>
+    <span id="savedTag" class="saved-tag">下書き保存✓</span>
+    <div class="action-buttons">
+      <button id="previewBtn" class="btn secondary">👀 プレビュー</button>
+      <button id="publishBtn" class="btn">💾 DBに保存（公開）</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/quiz-loader.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

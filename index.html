@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>新郎新婦クイズ大会 💍</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 装飾 -->
+  <div class="floaty" style="top:8%;left:6%;animation-delay:0s">💕</div>
+  <div class="floaty" style="top:18%;right:8%;animation-delay:1.5s">🎉</div>
+  <div class="floaty" style="bottom:14%;left:10%;animation-delay:3s">💍</div>
+  <div class="floaty" style="bottom:10%;right:12%;animation-delay:4.2s">🥂</div>
+
+  <div id="demoBadge" class="badge-demo hidden">デモモード（未接続）</div>
+
+  <div class="stage">
+
+    <!-- スタート画面 -->
+    <section id="screen-start" class="card">
+      <span class="eyebrow">WEDDING QUIZ</span>
+      <div class="couple" id="couple">Taka ❤ Hana</div>
+      <h1 class="title" id="title">ふたりのこと、どれだけ知ってる？</h1>
+      <p class="muted" id="subtitle">新郎新婦クイズ大会</p>
+
+      <div class="field">
+        <label for="name">お名前（ニックネームOK）</label>
+        <input id="name" class="input" type="text" maxlength="20" placeholder="例）たろう" autocomplete="off" />
+      </div>
+
+      <button id="startBtn" class="btn" disabled>クイズスタート 🚀</button>
+      <p class="muted" id="startNote" style="margin-top:16px">読み込み中… ⏳</p>
+    </section>
+
+    <!-- クイズ画面 -->
+    <section id="screen-quiz" class="card hidden">
+      <div class="topbar">
+        <span class="qcount" id="qcount">Q1 / 7</span>
+        <div class="progress"><span id="progressBar"></span></div>
+        <span class="timer" id="timer"></span>
+      </div>
+      <div class="q-emoji" id="qEmoji">❓</div>
+      <h2 class="q-text" id="qText">問題文</h2>
+      <div class="choices" id="choices"></div>
+      <div class="verdict" id="verdict"></div>
+    </section>
+
+    <!-- 結果画面 -->
+    <section id="screen-result" class="card hidden">
+      <span class="eyebrow">RESULT</span>
+      <div class="score-ring" id="scoreRing">
+        <div class="inner">
+          <div class="num" id="scoreNum">0</div>
+          <div class="den" id="scoreDen">/ 0</div>
+        </div>
+      </div>
+      <p class="result-msg" id="resultMsg">おつかれさま！</p>
+      <p class="muted" id="submitStatus">結果を送信中…</p>
+
+      <div class="stack">
+        <button id="retrySubmit" class="btn hidden">もう一度送信する 🔁</button>
+        <a class="btn secondary" href="ranking.html">ランキングを見る 🏆</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ライブラリ（CDN） -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- アプリ -->
+  <script src="js/config.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/quiz-loader.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
