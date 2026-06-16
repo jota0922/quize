@@ -219,6 +219,9 @@ body {
 .choice.wrong { border-color: #ff8585; background: #fff0f0; }
 .choice.wrong .mark { background: #ff6b6b; color: #fff; }
 .choice.dim { opacity: 0.5; }
+/* 回答時は正誤を伏せ、選んだものだけ強調 */
+.choice.selected { border-color: var(--purple); background: #f1edff; }
+.choice.selected .mark { background: var(--purple); color: #fff; }
 .choice:disabled { cursor: default; }
 
 .verdict { margin-top: 18px; font-weight: 800; font-size: 1.1rem; min-height: 1.4em; }
@@ -407,4 +410,41 @@ body.admin-page { align-items: flex-start; justify-content: center; padding-bott
   .action-bar .action-buttons { width: 100%; }
   .action-bar .action-buttons .btn { flex: 1; }
   .status-msg { flex-basis: 100%; text-align: center; }
+}
+
+/* 答え合わせ（結果画面） */
+.review { margin-top: 20px; text-align: left; }
+.review-summary {
+  text-align: center; font-weight: 800; font-size: 1.15rem;
+  margin: 0 0 14px; color: var(--ink);
+}
+.review-q {
+  background: #faf7ff; border: 2px solid #efe7ff; border-radius: 18px;
+  padding: 14px 16px; margin-bottom: 14px;
+}
+.review-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.review-num {
+  flex: none; font-family: "Baloo 2"; font-weight: 800; color: var(--purple);
+  background: #efe7ff; border-radius: 10px; padding: 2px 10px;
+}
+.review-text { font-weight: 700; color: var(--ink); flex: 1; min-width: 0; }
+.review-status { flex: none; font-weight: 800; font-size: 0.95rem; }
+.review-status.ok { color: var(--mint); }
+.review-status.ng { color: #ff6b6b; }
+.review-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.review-choice {
+  display: flex; align-items: center; gap: 10px;
+  border: 2px solid #eee; border-radius: 12px; padding: 8px 12px; background: #fff;
+}
+.review-choice .mark {
+  flex: none; width: 26px; height: 26px; border-radius: 8px;
+  display: grid; place-items: center; font-weight: 800; background: #f0eaff; color: var(--ink);
+}
+.review-choice.correct { border-color: var(--mint); background: #e6fff9; }
+.review-choice.correct .mark { background: var(--mint); color: #fff; }
+.review-choice.wrong { border-color: #ff8585; background: #fff0f0; }
+.review-choice.wrong .mark { background: #ff6b6b; color: #fff; }
+.review-tag {
+  margin-left: auto; flex: none; font-size: 0.72rem; font-weight: 800;
+  color: var(--purple); background: #efe7ff; border-radius: 8px; padding: 2px 8px;
 }

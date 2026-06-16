@@ -12,6 +12,7 @@ const state = {
   locked: false,
   timer: null,
   timeLeft: 0,
+  answers: [], // 各問の回答（後で答え合わせに使う）: { picked }
 };
 
 // 画面の出し分け
@@ -38,6 +39,7 @@ function initStart() {
     state.name = nameInput.value.trim();
     state.index = 0;
     state.score = 0;
+    state.answers = [];
     state.startedAt = Date.now();
     show("screen-quiz");
     renderQuestion();
@@ -99,38 +101,28 @@ function startTimer() {
 }
 
 // ---------- 回答 ----------
+// 正解/不正解はその場で出さない。回答だけ記録して次の問題へ進む。
 function answer(picked) {
   if (state.locked) return;
   state.locked = true;
   clearInterval(state.timer);
 
   const q = ACTIVE_QUIZ.questions[state.index];
-  const correct = q.answer;
-  const isRight = picked === correct;
+  const isRight = picked === q.answer;
   if (isRight) state.score++;
 
+  // 後で答え合わせできるよう回答を保存
+  state.answers[state.index] = { picked };
+
+  // 選んだ選択肢だけ「選択済み」表示にする（正誤は伏せたまま）
   const buttons = [...$("#choices").querySelectorAll(".choice")];
   buttons.forEach((b, i) => {
     b.disabled = true;
-    if (i === correct) b.classList.add("correct");
-    else if (i === picked) b.classList.add("wrong");
+    if (i === picked) b.classList.add("selected");
     else b.classList.add("dim");
   });
 
-  const v = $("#verdict");
-  if (isRight) {
-    v.textContent = "正解！ 🎉";
-    v.className = "verdict ok";
-    if (window.confetti) confetti({ particleCount: 60, spread: 70, origin: { y: 0.7 } });
-  } else if (picked === -1) {
-    v.textContent = "時間切れ… ⏳";
-    v.className = "verdict ng";
-  } else {
-    v.textContent = "ざんねん… 😢";
-    v.className = "verdict ng";
-  }
-
-  setTimeout(next, 1300);
+  setTimeout(next, 450);
 }
 
 function next() {
@@ -149,21 +141,8 @@ async function finish() {
   $("#progressBar").style.width = "100%";
   show("screen-result");
 
-  // スコアリング演出
-  const pct = Math.round((state.score / total) * 100);
-  $("#scoreRing").style.setProperty("--deg", `${(state.score / total) * 360}deg`);
-  $("#scoreNum").textContent = state.score;
-  $("#scoreDen").textContent = `/ ${total}`;
-
-  let msg = "ナイスチャレンジ！";
-  if (pct === 100) msg = "全問正解！ふたりの親友認定 👑";
-  else if (pct >= 70) msg = "すごい！ふたりのことよく知ってる 💕";
-  else if (pct >= 40) msg = "なかなか！ここから仲を深めよう 🤝";
-  $("#resultMsg").textContent = msg;
-
-  if (window.confetti && pct >= 70) {
-    confetti({ particleCount: 160, spread: 100, origin: { y: 0.6 } });
-  }
+  // 得点・正誤はこの場では伏せる（後で「回答を確認する」ボタンで答え合わせ）
+  $("#resultMsg").textContent = "おつかれさま！回答を受け付けました 🎉";
 
   // 送信
   const status = $("#submitStatus");
@@ -183,6 +162,60 @@ async function finish() {
     status.textContent = "⚠ 送信に失敗しました。電波の良い場所で再度お試しください。";
     $("#retrySubmit").classList.remove("hidden");
   }
+}
+
+// ---------- 答え合わせ（後から確認） ----------
+function renderReview() {
+  const area = $("#reviewArea");
+  const letters = ["A", "B", "C", "D"];
+  const total = ACTIVE_QUIZ.questions.length;
+
+  const rows = ACTIVE_QUIZ.questions.map((q, qi) => {
+    const picked = state.answers[qi] ? state.answers[qi].picked : -1;
+    const isRight = picked === q.answer;
+
+    const choices = q.choices
+      .map((c, ci) => {
+        const tags = [];
+        if (ci === q.answer) tags.push("正解");
+        if (ci === picked) tags.push("あなたの回答");
+        const cls = [
+          "review-choice",
+          ci === q.answer ? "correct" : "",
+          ci === picked && !isRight ? "wrong" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+        const tagHtml = tags.length
+          ? ` <span class="review-tag">${tags.join(" / ")}</span>`
+          : "";
+        return `<li class="${cls}"><span class="mark">${letters[ci]}</span><span>${escapeHtml(
+          c
+        )}</span>${tagHtml}</li>`;
+      })
+      .join("");
+
+    const status =
+      picked === -1
+        ? '<span class="review-status ng">未回答</span>'
+        : isRight
+        ? '<span class="review-status ok">○ 正解</span>'
+        : '<span class="review-status ng">✗ 不正解</span>';
+
+    return `
+      <div class="review-q">
+        <div class="review-head">
+          <span class="review-num">Q${qi + 1}</span>
+          <span class="review-text">${q.emoji || "❓"} ${escapeHtml(q.question)}</span>
+          ${status}
+        </div>
+        <ul class="review-list">${choices}</ul>
+      </div>`;
+  });
+
+  const summary = `<p class="review-summary">スコア：${state.score} / ${total}</p>`;
+  area.innerHTML = summary + rows.join("");
+  area.classList.remove("hidden");
 }
 
 function escapeHtml(s) {
@@ -205,6 +238,20 @@ window.addEventListener("DOMContentLoaded", async () => {
     $("#retrySubmit").classList.add("hidden");
     finish();
   });
+
+  const reviewBtn = $("#reviewBtn");
+  if (reviewBtn) {
+    reviewBtn.addEventListener("click", () => {
+      const area = $("#reviewArea");
+      if (area.classList.contains("hidden")) {
+        renderReview();
+        reviewBtn.textContent = "答え合わせを閉じる ✖";
+      } else {
+        area.classList.add("hidden");
+        reviewBtn.textContent = "回答を確認する 👀";
+      }
+    });
+  }
 
   // 出題するクイズを決定（DB→既定。プレビュー時は下書き）
   try {

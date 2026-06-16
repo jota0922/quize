@@ -52,19 +52,17 @@
     <!-- 結果画面 -->
     <section id="screen-result" class="card hidden">
       <span class="eyebrow">RESULT</span>
-      <div class="score-ring" id="scoreRing">
-        <div class="inner">
-          <div class="num" id="scoreNum">0</div>
-          <div class="den" id="scoreDen">/ 0</div>
-        </div>
-      </div>
+      <div class="q-emoji">🎉</div>
       <p class="result-msg" id="resultMsg">おつかれさま！</p>
       <p class="muted" id="submitStatus">結果を送信中…</p>
 
       <div class="stack">
+        <button id="reviewBtn" class="btn">回答を確認する 👀</button>
         <button id="retrySubmit" class="btn hidden">もう一度送信する 🔁</button>
         <a class="btn secondary" href="ranking.html">ランキングを見る 🏆</a>
       </div>
+
+      <div id="reviewArea" class="review hidden"></div>
     </section>
 
   </div>
