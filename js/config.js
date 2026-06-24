@@ -17,8 +17,8 @@
 
 const CONFIG = {
   // ↓↓↓ ここに Supabase の値を貼り付けてください ↓↓↓
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
+  SUPABASE_URL: "https://cdsplggoonemissordxy.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_h3wIX47o4ZOXQ_dMsasTDA_GzUO-0kZ",
   // ↑↑↑ 空なら自動でデモモードになります ↑↑↑
 
   // テーブル名（supabase_setup.sql と合わせる。通常は変更不要）
