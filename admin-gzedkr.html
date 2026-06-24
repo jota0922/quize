@@ -75,11 +75,75 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 合言葉ロック（運営用） -->
+  <div id="gate" class="gate hidden">
+    <div class="gate-box card">
+      <span class="eyebrow">STAFF ONLY</span>
+      <h1 class="title">合言葉を入力 🔒</h1>
+      <p class="muted">このページは運営（クイズ作成）用です</p>
+      <div class="field" style="margin-top:18px">
+        <input id="gateInput" class="input" type="password" placeholder="合言葉" autocomplete="off" />
+      </div>
+      <button id="gateBtn" class="btn">開く 🔓</button>
+      <p id="gateErr" class="gate-err"></p>
+    </div>
+  </div>
+
+  <!-- 設定だけ先に読み込み（合言葉の判定に使う） -->
   <script src="js/config.js"></script>
-  <script src="js/quiz-data.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/quiz-loader.js"></script>
-  <script src="js/admin.js"></script>
+  <script>
+    (function () {
+      // 解錠後に順番どおり読み込むアプリ本体
+      var APP_SCRIPTS = [
+        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2",
+        "js/quiz-data.js",
+        "js/storage.js",
+        "js/quiz-loader.js",
+        "js/admin.js"
+      ];
+      function loadApp() {
+        var i = 0;
+        (function next() {
+          if (i >= APP_SCRIPTS.length) return;
+          var s = document.createElement("script");
+          s.src = APP_SCRIPTS[i++];
+          s.onload = next;
+          document.body.appendChild(s);
+        })();
+      }
+
+      var pass = (window.CONFIG && CONFIG.ADMIN_PASSCODE) || "";
+      var KEY = "quiz_admin_unlock";
+
+      // 合言葉が未設定、または同じ端末で解錠済みならそのまま起動
+      if (!pass || localStorage.getItem(KEY) === pass) {
+        loadApp();
+        return;
+      }
+
+      // ロック画面を表示
+      var gate = document.getElementById("gate");
+      var input = document.getElementById("gateInput");
+      var err = document.getElementById("gateErr");
+      gate.classList.remove("hidden");
+      input.focus();
+
+      function tryOpen() {
+        if (input.value === pass) {
+          localStorage.setItem(KEY, pass);   // 次回からこの端末では省略
+          gate.classList.add("hidden");
+          loadApp();
+        } else {
+          err.textContent = "合言葉が違います";
+          input.value = "";
+          input.focus();
+        }
+      }
+      document.getElementById("gateBtn").addEventListener("click", tryOpen);
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") tryOpen();
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -24,6 +24,12 @@ const CONFIG = {
   // テーブル名（supabase_setup.sql と合わせる。通常は変更不要）
   TABLE: "quiz_results",         // 回答結果（得点）
   CONFIG_TABLE: "quiz_config",   // クイズの問題そのもの
+
+  // クイズ作成ページ(admin)の簡易ロック用「合言葉」。
+  //   ここを好きな言葉に変えてください（例: "kanpai2026"）。
+  //   空 "" にするとロックなしで開けます。
+  //   ※静的サイトなので強固な認証ではなく「うっかり開封を防ぐ」程度のものです。
+  ADMIN_PASSCODE: "sachiru102",
 };
 
 // Supabase が設定済みかどうか

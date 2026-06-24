@@ -448,3 +448,29 @@ body.admin-page { align-items: flex-start; justify-content: center; padding-bott
   margin-left: auto; flex: none; font-size: 0.72rem; font-weight: 800;
   color: var(--purple); background: #efe7ff; border-radius: 8px; padding: 2px 8px;
 }
+
+/* ============================================================
+   合言葉ロック（クイズ作成ページ）
+   ============================================================ */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(255,214,232,.96), rgba(231,214,255,.96));
+  backdrop-filter: blur(6px);
+}
+.gate-box {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+.gate-err {
+  min-height: 1.3em;
+  margin: 10px 0 0;
+  color: var(--pink);
+  font-weight: 800;
+}
