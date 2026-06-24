@@ -295,7 +295,7 @@ async function publish() {
 
 function preview() {
   localStorage.setItem(DRAFT_KEY, JSON.stringify(model));
-  window.open("index.html?preview=1", "_blank");
+  window.open("quiz.html?preview=1", "_blank");
 }
 
 function exportJson() {

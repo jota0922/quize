@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新郎新婦クイズ大会 💍 トップ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 装飾 -->
+  <div class="floaty" style="top:8%;left:6%;animation-delay:0s">💕</div>
+  <div class="floaty" style="top:18%;right:8%;animation-delay:1.5s">🎉</div>
+  <div class="floaty" style="bottom:14%;left:10%;animation-delay:3s">💍</div>
+  <div class="floaty" style="bottom:10%;right:12%;animation-delay:4.2s">🥂</div>
+
+  <div id="demoBadge" class="badge-demo hidden">デモモード（未接続）</div>
+
+  <div class="stage">
+    <section class="card">
+      <span class="eyebrow">WEDDING QUIZ</span>
+      <h1 class="title">新郎新婦クイズ大会 💍</h1>
+      <p class="muted">ようこそ！下から選んでね</p>
+
+      <div class="stack" style="margin-top:24px">
+        <a class="btn" href="quiz.html">クイズに行く 🚀</a>
+        <a class="btn secondary" href="ranking.html">ランキングを見る 🏆</a>
+        <a class="btn secondary" href="admin-gzedkr.html">クイズを作る ✏️</a>
+      </div>
+
+      <p class="muted" style="margin-top:20px;font-size:.85em">
+        ※「クイズを作る」は運営用です
+      </p>
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    // Supabase 未設定ならデモモード表示（他ページと同じ挙動）
+    if (!window.CONFIG || !CONFIG.useSupabase) {
+      document.getElementById("demoBadge").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
