@@ -105,9 +105,16 @@
         var i = 0;
         (function next() {
           if (i >= APP_SCRIPTS.length) return;
+          var src = APP_SCRIPTS[i++];
           var s = document.createElement("script");
-          s.src = APP_SCRIPTS[i++];
+          s.src = src;
+          // 1つのスクリプト（例：CDNがブロックされたSupabase）が失敗しても
+          // 連鎖を止めず次へ進む。これでadmin.jsは必ず読み込まれる。
           s.onload = next;
+          s.onerror = function () {
+            console.warn("スクリプトの読み込みに失敗しました（スキップして続行）:", src);
+            next();
+          };
           document.body.appendChild(s);
         })();
       }

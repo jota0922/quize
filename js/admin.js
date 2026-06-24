@@ -356,7 +356,7 @@ function setStatus(msg, kind) {
 }
 
 // ---------- 起動 ----------
-window.addEventListener("DOMContentLoaded", async () => {
+async function init() {
   bindSettings();
   $("#addQuestionBtn").addEventListener("click", addQuestion);
   $("#publishBtn").addEventListener("click", publish);
@@ -369,4 +369,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     e.target.value = "";
   });
   await boot();
-});
+}
+
+// admin.js は合言葉ロック解除後に動的読み込みされるため、
+// すでに DOMContentLoaded が発火済みのことが多い。
+// その場合は即実行し、まだ読み込み中なら従来どおりイベントを待つ。
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
